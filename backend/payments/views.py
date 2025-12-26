@@ -297,14 +297,20 @@ def _send_meta_purchase(tx: Dict[str, Any], utms: Optional[Dict[str, Any]] = Non
 
 @csrf_exempt
 def create_pix_transaction(request: HttpRequest):
-	if request.method != "POST":
-		return JsonResponse({"error": "Method not allowed"}, status=405)
 
-	try:
-		data: Dict[str, Any] = json.loads(request.body.decode("utf-8"))
-	except json.JSONDecodeError:
-		return JsonResponse({"error": "Invalid JSON body"}, status=400)
+    # 🔑 PRE-FLIGHT CORS
+    if request.method == "OPTIONS":
+        return JsonResponse({}, status=200)
 
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON body"}, status=400)
+
+		
 	# Always use KorePay
 	secret = getattr(settings, "KOREPAY_SECRET_KEY", "")
 	company = getattr(settings, "KOREPAY_COMPANY_ID", "")
