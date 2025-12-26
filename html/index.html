@@ -16,8 +16,13 @@
   <body>
     <div id="root"></div>
     <script>
-      // Load API configuration from server
-      window.API_BASE_URL = localStorage.getItem('apiBaseUrl') || 'http://localhost:8001';
+      // Detect API URL from environment or Railway
+      const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+      const defaultApiUrl = isProduction ? 'https://wepas-production-ala6.up.railway.app' : 'http://localhost:8001';
+      
+      window.API_BASE_URL = localStorage.getItem('apiBaseUrl') || defaultApiUrl;
+      
+      // Try to get from /api/config if available
       fetch('/api/config/')
         .then(r => r.json())
         .then(data => {
@@ -25,8 +30,21 @@
           localStorage.setItem('apiBaseUrl', data.apiBaseUrl);
         })
         .catch(() => {
-          console.warn('Failed to load API config, using default');
+          // Use default if /api/config is not available
+          window.API_BASE_URL = defaultApiUrl;
         });
+      
+      // Intercept all fetch calls to replace localhost:8000/8001 with API_BASE_URL
+      const originalFetch = window.fetch;
+      window.fetch = function(...args) {
+        let url = args[0];
+        if (typeof url === 'string') {
+          url = url.replace(/http:\/\/localhost:8000/g, window.API_BASE_URL);
+          url = url.replace(/http:\/\/localhost:8001/g, window.API_BASE_URL);
+          args[0] = url;
+        }
+        return originalFetch.apply(this, args);
+      };
     </script>
     <script
   src="https://cdn.utmify.com.br/scripts/utms/latest.js"
