@@ -19,7 +19,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-	"corsheaders.middleware.CorsMiddleware",
 	"django.middleware.security.SecurityMiddleware",
 	"whitenoise.middleware.WhiteNoiseMiddleware",
 	"payevo_proxy.middleware.CORSHeadersMiddleware",
@@ -76,33 +75,9 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# CORS
-CORS_ALLOW_ALL_ORIGINS = True  # Temporary for debugging CORS issues
-# CORS_ALLOWED_ORIGINS_STR = os.environ.get(
-# 	"CORS_ALLOWED_ORIGINS",
-# 	"http://localhost:3000,http://localhost:8000,http://localhost:8001,https://wepas.netlify.app"
-# )
-# CORS_ALLOWED_ORIGINS = [origin.strip() for origin in CORS_ALLOWED_ORIGINS_STR.split(",")]
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = [
-	"DELETE",
-	"GET",
-	"OPTIONS",
-	"PATCH",
-	"POST",
-	"PUT",
-]
-CORS_ALLOW_HEADERS = [
-	"accept",
-	"accept-encoding",
-	"authorization",
-	"content-type",
-	"dnt",
-	"origin",
-	"user-agent",
-	"x-csrftoken",
-	"x-requested-with",
-]
+# CORS - Handled by custom middleware
+# CORS_ALLOW_ALL_ORIGINS = True already handled by middleware
+CORS_ALLOW_CREDENTIALS = False  # Disabled - using custom middleware instead
 
 # Payevo settings
 PAYEVO_SECRET_KEY = os.environ.get("PAYEVO_SECRET_KEY", "sk_like_rBAnuKBBJmQ2R4CmrfkfA6ibP6mcmQ4XkqVh3URirYdhN3zg")
