@@ -76,10 +76,11 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS
-CORS_ALLOWED_ORIGINS = os.environ.get(
+CORS_ALLOWED_ORIGINS_STR = os.environ.get(
 	"CORS_ALLOWED_ORIGINS",
 	"http://localhost:3000,http://localhost:8000,http://localhost:8001,https://wepas.netlify.app"
-).split(",")
+)
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in CORS_ALLOWED_ORIGINS_STR.split(",")]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
 	"DELETE",
