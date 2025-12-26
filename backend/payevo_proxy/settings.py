@@ -8,6 +8,7 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 INSTALLED_APPS = [
+	"corsheaders",
 	"django.contrib.admin",
 	"django.contrib.auth",
 	"django.contrib.contenttypes",
@@ -19,6 +20,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+	"corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 	"django.middleware.security.SecurityMiddleware",
 	"whitenoise.middleware.WhiteNoiseMiddleware",
 	"payevo_proxy.middleware.CORSHeadersMiddleware",
@@ -120,4 +123,11 @@ KOREPAY_COMPANY_ID = os.environ.get("KOREPAY_COMPANY_ID", "cb68e0a7-b04e-46eb-be
 
 # API Base URL (for client-side to know where to call)
 API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:8001")
+
+CORS_ALLOWED_ORIGINS = [
+    "https://roaring-dasik-d2f61e.netlify.app",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://localhost:8001",
+]
 
