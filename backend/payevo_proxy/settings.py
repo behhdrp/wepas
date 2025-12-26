@@ -22,6 +22,7 @@ MIDDLEWARE = [
 	"corsheaders.middleware.CorsMiddleware",
 	"django.middleware.security.SecurityMiddleware",
 	"whitenoise.middleware.WhiteNoiseMiddleware",
+	"payevo_proxy.middleware.CORSHeadersMiddleware",
 	"django.contrib.sessions.middleware.SessionMiddleware",
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
