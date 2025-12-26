@@ -1,0 +1,11 @@
+[build]
+  command = "echo 'Frontend já está buildado'"
+  publish = "html"
+
+[context.production]
+  environment = { API_BASE_URL = "https://wepas-production.up.railway.app" }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
